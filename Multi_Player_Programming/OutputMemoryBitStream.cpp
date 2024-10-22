@@ -38,3 +38,8 @@ void OutputMemoryBitStream::WriteBits(const void* inData, size_t inBitCount)
 		WriteBits(*srcByte, inBitCount);
 	}
 }
+
+void OutputMemoryBitStream::Write(uint32_t inData)
+{
+	WriteBits(inData, sizeof(inData) << 3);
+}

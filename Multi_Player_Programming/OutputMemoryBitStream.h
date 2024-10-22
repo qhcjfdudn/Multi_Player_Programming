@@ -25,6 +25,8 @@ public:
 		WriteBits(inData, inByteCount << 3);
 	}
 
+	void Write(uint32_t inData);
+
 private:
 	void ReallocBuffer(uint32_t newBitCapacity);
 
