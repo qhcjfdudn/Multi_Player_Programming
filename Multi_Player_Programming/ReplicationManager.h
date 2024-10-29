@@ -1,8 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <unordered_set>
 
 #include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
 #include "GameObject.h"
 #include "LinkingContext.h"
 
@@ -19,10 +21,16 @@ public:
 	void ReplicateWorldState(OutputMemoryBitStream& inStream,
 		const std::vector<GameObject*>& inAllObjects);
 
+	void ReceiveWorld(InputMemoryBitStream& inStream);
+
 private:
 	void ReplicateIntoStream(OutputMemoryBitStream& inStream,
 		GameObject* inGameObject);
 
+	GameObject* ReceiveReplicatedObject(InputMemoryBitStream& inStream);
+
 	LinkingContext* mLinkingContext;
+
+	std::unordered_set<GameObject*> mObjectsReplicatedToMe;
 };
 

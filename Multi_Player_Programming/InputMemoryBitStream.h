@@ -9,6 +9,7 @@ public:
 	~InputMemoryBitStream() { free(mBuffer); }
 
 	void Read(void* outData, uint32_t inBitCount);
+	void Read(uint32_t& outData);
 
 	uint32_t GetRemainingBitCount() const;
 

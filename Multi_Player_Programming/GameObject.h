@@ -13,5 +13,8 @@ public:
 	virtual void Write(OutputMemoryBitStream& inStream) {
 
 	}
+	virtual void Read(InputMemoryBitStream& inStream) {
+
+	}
 	void Destroy() {}
 };

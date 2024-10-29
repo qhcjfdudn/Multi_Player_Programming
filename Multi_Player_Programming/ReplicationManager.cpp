@@ -20,3 +20,38 @@ void ReplicationManager::ReplicateIntoStream(OutputMemoryBitStream& inStream,
 	// 3. 객체 직렬화 기록
 	inGameObject->Write(inStream);
 }
+
+void ReplicationManager::ReceiveWorld(InputMemoryBitStream& inStream) {
+	std::unordered_set<GameObject*> receivedObjects;
+
+	while (inStream.GetRemainingBitCount() > 0) {
+		GameObject* receivedGameObject = ReceiveReplicatedObject(inStream);
+		receivedObjects.insert(receivedGameObject);
+	}
+
+	// 새로 받은 replicatedGameObject 중 기존의 object가 없다면 삭제로 간주
+	for (auto go : mObjectsReplicatedToMe) {
+		if (receivedObjects.find(go) == receivedObjects.end()) {
+			mLinkingContext->RemoveGameObject(go);
+			go->Destroy();
+		}
+	}
+
+	mObjectsReplicatedToMe = receivedObjects;
+}
+
+GameObject* ReplicationManager::ReceiveReplicatedObject(InputMemoryBitStream& inStream) {
+	uint32_t networkId;
+	uint32_t classId;
+	inStream.Read(networkId);
+	inStream.Read(classId);
+
+	GameObject* go = mLinkingContext->GetGameObject(networkId);
+	if (!go) {
+		// 객체를 새로 생성해 networkId로 mLinkingContext를 갱신
+	}
+
+	go->Read(inStream);
+
+	return go;
+}
