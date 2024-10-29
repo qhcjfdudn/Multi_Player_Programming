@@ -1,6 +1,10 @@
 #pragma once
 #include <iostream>
 
+enum {
+	STREAM_ENDIANNESS, PLATFORM_ENDIANNESS
+};
+
 class OutputMemoryStream {
 public:
 	OutputMemoryStream() :

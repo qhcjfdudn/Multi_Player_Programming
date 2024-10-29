@@ -1,5 +1,10 @@
 #include "OutputMemoryBitStream.h"
 
+void OutputMemoryBitStream::ReallocBuffer(uint32_t newBitCapacity) {
+
+}
+
+
 void OutputMemoryBitStream::WriteBits(uint8_t inData, size_t inBitCount)
 {
 	// inBitCount와 비교해 buffer의 사이즈를 늘려줄지 판단
