@@ -3,6 +3,7 @@
 #include <string>
 
 #include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
 
 enum class MouseStatusProperties
 {
@@ -17,6 +18,7 @@ class MouseStatus
 {
 public:
 	void Write(OutputMemoryBitStream& inStream, uint32_t inProperties);
+	void Read(InputMemoryBitStream& inStream);
 
 private:
 	std::string mName;

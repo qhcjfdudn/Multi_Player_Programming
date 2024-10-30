@@ -19,3 +19,23 @@ void MouseStatus::Write(OutputMemoryBitStream& inStream, uint32_t inProperties)
 		inStream.Write(static_cast<uint32_t>(mHealth));
 	}
 }
+
+void MouseStatus::Read(InputMemoryBitStream& inStream)
+{
+	uint32_t writtenProperties;
+	inStream.Read(writtenProperties,
+		GetRequiredBits<static_cast<int>(MouseStatusProperties::MSP_MAX)>::value);
+
+	if (writtenProperties & static_cast<int>(MouseStatusProperties::MSP_Name)) {
+		inStream.Read(mName);
+	}
+	if (writtenProperties & static_cast<int>(MouseStatusProperties::MSP_LegCount)) {
+		inStream.Read(mLegCount);
+	}
+	if (writtenProperties & static_cast<int>(MouseStatusProperties::MSP_HeadCount)) {
+		inStream.Read(mHeadCount);
+	}
+	if (writtenProperties & static_cast<int>(MouseStatusProperties::MSP_Health)) {
+		inStream.Read(mHealth);
+	}
+}
