@@ -1,5 +1,6 @@
 #include"ReplicationManager.h"
 #include "GetRequiredBits.h"
+#include "ReplicationHeader.h"
 
 void ReplicationManager::ReplicateWorldState(OutputMemoryBitStream& inStream,
 	const std::vector<GameObject*>& inAllObjects) {
@@ -54,4 +55,81 @@ GameObject* ReplicationManager::ReceiveReplicatedObject(InputMemoryBitStream& in
 	go->Read(inStream);
 
 	return go;
+}
+
+void ReplicationManager::ReplicateCreate(OutputMemoryBitStream& inStream,
+	GameObject* inGameObject)
+{
+	ReplicationHeader rh(ReplicationAction::RA_Create,
+		mLinkingContext->GetNetworkId(inGameObject, true),
+		inGameObject->GetClassId());
+
+	rh.Write(inStream);
+	inGameObject->Write(inStream);
+}
+
+void ReplicationManager::ReplicateUpdate(OutputMemoryBitStream& inStream,
+	GameObject* inGameObject)
+{
+	ReplicationHeader rh(ReplicationAction::RA_Update,
+		mLinkingContext->GetNetworkId(inGameObject, false),
+		inGameObject->GetClassId());
+
+	rh.Write(inStream);
+	inGameObject->Write(inStream);
+}
+
+void ReplicationManager::ReplicateDestroy(OutputMemoryBitStream& inStream,
+	GameObject* inGameObject)
+{
+	ReplicationHeader rh(ReplicationAction::RA_Destroy,
+		mLinkingContext->GetNetworkId(inGameObject, false));
+
+	rh.Write(inStream);
+}
+
+void ReplicationManager::ProcessReplicationAction(InputMemoryBitStream& inStream)
+{
+	ReplicationHeader rh;
+	rh.Read(inStream);
+
+	switch (rh.mReplicationAction)
+	{
+	case ReplicationAction::RA_Create:
+		// CreateRegistry::Get() 메서드가 있다면 객체 생성. 아니라면 rh.mClassId를 보고 생성.
+		GameObject* go = nullptr;
+
+		mLinkingContext->AddGameObject(go, rh.mNetworkId);
+		go->Read(inStream);
+		
+		break;
+
+	case ReplicationAction::RA_Update:
+		GameObject* go = mLinkingContext->GetGameObject(rh.mNetworkId);
+
+		if (go) {
+			go->Read(inStream);
+		}
+		else {
+			// 아직 ReplicateCreate가 되지 못한 상태로 전달되었을 수 있다.
+			// 다음 stream을 읽기 위해 어쨌든 stream의 head를 전진시켜야 하기 때문에, 
+			// 정상적인 것처럼 수신한 뒤 객체 폐기한다.
+			// CreateRegistry::Get() 메서드가 있다면 객체 생성. 아니라면 rh.mClassId를 보고 생성.
+			go = nullptr;
+			go->Read(inStream);
+			delete go;
+		}
+		
+		break;
+
+	case ReplicationAction::RA_Destroy:
+		GameObject* go = mLinkingContext->GetGameObject(rh.mNetworkId);
+		mLinkingContext->RemoveGameObject(go);
+		go->Destroy();
+		
+		break;
+		
+	default:
+		break;
+	}
 }

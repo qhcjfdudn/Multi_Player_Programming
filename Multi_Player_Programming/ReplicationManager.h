@@ -23,6 +23,13 @@ public:
 
 	void ReceiveWorld(InputMemoryBitStream& inStream);
 
+	void ReplicateCreate(OutputMemoryBitStream& inStream,
+		GameObject* inGameObject);
+	void ReplicateUpdate(OutputMemoryBitStream& inStream,
+		GameObject* inGameObject);
+	void ReplicateDestroy(OutputMemoryBitStream& inStream,
+		GameObject* inGameObject);
+
 private:
 	void ReplicateIntoStream(OutputMemoryBitStream& inStream,
 		GameObject* inGameObject);

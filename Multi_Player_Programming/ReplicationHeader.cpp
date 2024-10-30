@@ -18,6 +18,4 @@ void ReplicationHeader::Read(InputMemoryBitStream& inStream) {
 
 	if (mReplicationAction != ReplicationAction::RA_Destroy)
 		inStream.Read(mClassId);
-
-
 }
