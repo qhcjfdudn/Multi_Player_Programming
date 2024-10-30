@@ -92,12 +92,13 @@ void ReplicationManager::ProcessReplicationAction(InputMemoryBitStream& inStream
 {
 	ReplicationHeader rh;
 	rh.Read(inStream);
+	GameObject* go;
 
 	switch (rh.mReplicationAction)
 	{
 	case ReplicationAction::RA_Create:
 		// CreateRegistry::Get() 메서드가 있다면 객체 생성. 아니라면 rh.mClassId를 보고 생성.
-		GameObject* go = nullptr;
+		go = nullptr;
 
 		mLinkingContext->AddGameObject(go, rh.mNetworkId);
 		go->Read(inStream);
@@ -105,7 +106,7 @@ void ReplicationManager::ProcessReplicationAction(InputMemoryBitStream& inStream
 		break;
 
 	case ReplicationAction::RA_Update:
-		GameObject* go = mLinkingContext->GetGameObject(rh.mNetworkId);
+		go = mLinkingContext->GetGameObject(rh.mNetworkId);
 
 		if (go) {
 			go->Read(inStream);
@@ -123,7 +124,7 @@ void ReplicationManager::ProcessReplicationAction(InputMemoryBitStream& inStream
 		break;
 
 	case ReplicationAction::RA_Destroy:
-		GameObject* go = mLinkingContext->GetGameObject(rh.mNetworkId);
+		go = mLinkingContext->GetGameObject(rh.mNetworkId);
 		mLinkingContext->RemoveGameObject(go);
 		go->Destroy();
 		

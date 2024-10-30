@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
 
 class GameObject {
 public:
