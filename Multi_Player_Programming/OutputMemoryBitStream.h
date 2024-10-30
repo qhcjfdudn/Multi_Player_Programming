@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <string>
 
 class OutputMemoryBitStream
 {
@@ -26,6 +27,7 @@ public:
 	}
 
 	void Write(uint32_t inData);
+	void Write(std::string inData);
 
 private:
 	void ReallocBuffer(uint32_t newBitCapacity);
