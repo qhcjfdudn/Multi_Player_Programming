@@ -2,6 +2,9 @@
 
 #include "GetRequiredBits.h"
 
+using std::cout;
+using std::endl;
+
 enum class TestEnum {
 	AA, BB, CC, DD, MAX
 };
