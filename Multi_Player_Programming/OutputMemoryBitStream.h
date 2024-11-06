@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 
+#include "Vector3.h"
+
 class OutputMemoryBitStream
 {
 public:
@@ -28,6 +30,7 @@ public:
 
 	void Write(uint32_t inData);
 	void Write(std::string inData);
+	void Write(Vector3 inData);
 
 private:
 	void ReallocBuffer(uint32_t newBitCapacity);

@@ -53,3 +53,6 @@ void OutputMemoryBitStream::Write(std::string inData)
 {
 
 }
+
+void OutputMemoryBitStream::Write(Vector3 inData)
+{}
