@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+#include "Vector3.h"
+
 class InputMemoryBitStream
 {
 public:
@@ -15,6 +17,7 @@ public:
 	void Read(std::string& outData);
 	void Read(int& outData);
 	void Read(float& outData);
+	void Read(Vector3& outData);
 
 	uint32_t GetRemainingBitCount() const;
 
