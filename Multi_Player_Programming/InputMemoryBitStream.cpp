@@ -31,6 +31,10 @@ void InputMemoryBitStream::Read(Vector3& outData)
 
 }
 
+void InputMemoryBitStream::Read(bool& outData)
+{
+}
+
 uint32_t InputMemoryBitStream::GetRemainingBitCount() const
 {
 	return mBitCapacity - mBitHead;

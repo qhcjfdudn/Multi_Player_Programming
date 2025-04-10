@@ -18,6 +18,7 @@ public:
 	void Read(int& outData);
 	void Read(float& outData);
 	void Read(Vector3& outData);
+	void Read(bool& outData);
 
 	uint32_t GetRemainingBitCount() const;
 
