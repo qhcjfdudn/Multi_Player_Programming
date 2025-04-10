@@ -2,6 +2,9 @@
 
 #include "InputState.h"
 
+class OutputMemoryBitStream;
+class InputMemoryBitStream;
+
 class Move
 {
 public:
@@ -11,9 +14,11 @@ public:
 	float GetTimestamp() const;
 	float GetDeltaTime() const;
 
+	bool Write(OutputMemoryBitStream& inOutputStream) const;
+	bool Read(InputMemoryBitStream& inInputStream);
+
 private:
 	InputState mInputState;
 	float mTimestamp;
 	float mDeltaTime;
 };
-

@@ -1,5 +1,8 @@
 #include "Move.h"
 
+#include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
+
 Move::Move(const InputState& inInputState, float inTimestamp, float inDeltaTime) :
 	mInputState(inInputState),
 	mTimestamp(inTimestamp),
@@ -20,4 +23,20 @@ float Move::GetTimestamp() const
 float Move::GetDeltaTime() const
 {
 	return mDeltaTime;
+}
+
+bool Move::Write(OutputMemoryBitStream& inOutputStream) const
+{
+	inOutputStream.Write(mInputState);
+	inOutputStream.Write(mTimestamp);
+	inOutputStream.Write(mDeltaTime);
+	return true;
+}
+
+bool Move::Read(InputMemoryBitStream& inInputStream)
+{
+	inInputStream.Read(mInputState);
+	inInputStream.Read(mTimestamp);
+	inInputStream.Read(mDeltaTime);
+	return true;
 }
