@@ -1,3 +1,4 @@
+﻿#include "pch.h"
 #include "MoveList.h"
 
 MoveList::MoveList() : mLastMoveTimestamp(-1.f)
