@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <iostream>
 #include <string>
@@ -21,6 +21,7 @@ public:
 	void Read(Vector3& outData);
 	void Read(bool& outData);
 	void Read(InputState& outData);
+	void Read(PacketSequenceNumber& outData);
 
 	uint32_t GetRemainingBitCount() const;
 

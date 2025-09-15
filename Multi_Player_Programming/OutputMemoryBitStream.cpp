@@ -2,13 +2,16 @@
 #include "OutputMemoryBitStream.h"
 
 void OutputMemoryBitStream::ReallocBuffer(uint32_t newBitCapacity) {
+	mBuffer = reinterpret_cast<char*>(realloc(mBuffer, (newBitCapacity + 7) >> 3));
+	// realloc ì‹¤íŒ¨ ì‹œ ì½”ë“œ ì²˜ë¦¬ í•„ìš”
 
+	mBitCapacity = newBitCapacity;
 }
 
 
 void OutputMemoryBitStream::WriteBits(uint8_t inData, size_t inBitCount)
 {
-	// inBitCount¿Í ºñ±³ÇØ bufferÀÇ »çÀÌÁî¸¦ ´Ã·ÁÁÙÁö ÆÇ´Ü
+	// inBitCountì™€ ë¹„êµí•´ bufferì˜ ì‚¬ì´ì¦ˆë¥¼ ëŠ˜ë ¤ì¤„ì§€ íŒë‹¨
 	uint32_t nextBitHead = mBitHead + static_cast<uint32_t>(inBitCount);
 	if (nextBitHead > mBitCapacity) {
 		ReallocBuffer(std::max(mBitCapacity * 2, nextBitHead));
@@ -17,11 +20,11 @@ void OutputMemoryBitStream::WriteBits(uint8_t inData, size_t inBitCount)
 	uint32_t byteOffset = mBitHead >> 3;
 	uint32_t bitOffset = mBitHead & 7;
 
-	// ÇöÀç Ã³¸® Áß ¹ÙÀÌÆ®¿¡ inData Áß ¾µ ¼ö ÀÖ´Â ¸¸Å­ ¿ì¼± ¾²±â
+	// í˜„ì¬ ì²˜ë¦¬ ì¤‘ ë°”ì´íŠ¸ì— inData ì¤‘ ì“¸ ìˆ˜ ìˆëŠ” ë§Œí¼ ìš°ì„  ì“°ê¸°
 	uint8_t currentMask = ~(0xff << bitOffset);
 	mBuffer[byteOffset] = (mBuffer[byteOffset] & currentMask) | (inData << bitOffset);
 
-	// inDataÀÇ ¾²Áö ¸øÇÑ »óÀ§ ºÎºĞ ¾²±â
+	// inDataì˜ ì“°ì§€ ëª»í•œ ìƒìœ„ ë¶€ë¶„ ì“°ê¸°
 	uint32_t bitsFreeThisByte = 8 - bitOffset;
 	if (inBitCount > bitsFreeThisByte) {
 		mBuffer[byteOffset + 1] = inData >> bitsFreeThisByte;
@@ -60,4 +63,18 @@ void OutputMemoryBitStream::Write(Vector3 inData)
 
 void OutputMemoryBitStream::Write(InputState inData)
 {
+}
+
+void OutputMemoryBitStream::Write(float inData)
+{
+	WriteBits(&inData, sizeof(inData) << 3);
+}
+
+void OutputMemoryBitStream::Write(bool inData)
+{
+}
+
+void OutputMemoryBitStream::Write(PacketSequenceNumber inData)
+{
+	WriteBits(&inData, sizeof(inData) << 3);
 }

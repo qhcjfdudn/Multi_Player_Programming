@@ -40,6 +40,10 @@ void InputMemoryBitStream::Read(InputState& outData)
 {
 }
 
+void InputMemoryBitStream::Read(PacketSequenceNumber& outData)
+{
+}
+
 uint32_t InputMemoryBitStream::GetRemainingBitCount() const
 {
 	return mBitCapacity - mBitHead;

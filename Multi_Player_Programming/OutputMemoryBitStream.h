@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <string>
 
@@ -11,7 +11,7 @@ public:
 	OutputMemoryBitStream() :
 		mBuffer(nullptr), mBitHead(0), mBitCapacity(0)
 	{
-		ReallocBuffer(256);		// 32bytes
+		ReallocBuffer(32 << 3);		// 32bytes
 	}
 	~OutputMemoryBitStream()
 	{
@@ -33,6 +33,9 @@ public:
 	void Write(std::string inData);
 	void Write(Vector3 inData);
 	void Write(InputState inData);
+	void Write(float inData);
+	void Write(bool inData);
+	void Write(PacketSequenceNumber inData);
 
 private:
 	void ReallocBuffer(uint32_t newBitCapacity);
